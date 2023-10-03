@@ -1,0 +1,10 @@
+/data
+/corbeille
+/.venv
+
+/project/weights
+/project/trainning_1
+/project/trainning_2
+
+backbone.txt
+docker_run.txt
