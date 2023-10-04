@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import datetime
 
 def plot_image(prediction_array, true_label, img, class_names):
   img = img/255.0
