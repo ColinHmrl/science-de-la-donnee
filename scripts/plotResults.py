@@ -79,7 +79,7 @@ def plot_results(binary, predictions, full_tests_labels, full_tests_images, clas
       plot_image_binary(predictions[i], full_tests_labels[i], full_tests_images[i], class_names)
 
       plt.subplot(num_rows, 2*num_cols, 2*i+2)
-      plot_value_array_binary(predictions[i], full_tests_labels[i])
+      plot_value_array_binary(predictions[i], full_tests_labels[i], len(class_names))
   else:
     for i in range(start, end):
         # index = tests_images = i%batch_size + i //batch_size
