@@ -22,7 +22,7 @@ def build(input_shape, num_classes):
 
     model.compile(optimizer='adam',
               loss=loss,
-              metrics=['accuracy', 'AUC', 'Precision', 'Recall', 'TruePositives', 'TrueNegatives', 'FalsePositives', 'FalseNegatives'])
+              metrics=['accuracy'])
     
     
     return model
