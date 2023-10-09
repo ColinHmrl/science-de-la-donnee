@@ -2,7 +2,7 @@ import tensorflow as tf
 
 
 def build(input_shape, num_classes):
-    backbone = tf.keras.applications.Xception(weights='imagenet', include_top=False, input_shape=(input_shape[0],input_shape[1], 3))
+    backbone = tf.keras.applications.MobileNet(weights='imagenet', include_top=False, input_shape=(input_shape[0],input_shape[1], 3))
 
     for layer in backbone.layers:
         layer.trainable = False
