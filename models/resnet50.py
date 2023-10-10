@@ -17,7 +17,7 @@ def build(input_shape, num_classes):
         output = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
         loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
 
-    model = tf.keras.models.Model(inputs=input_layer, outputs=output)
+    model = tf.keras.models.Model(inputs=backbone.input, outputs=output)
 
     model.compile(optimizer='adam',
               loss=loss,
