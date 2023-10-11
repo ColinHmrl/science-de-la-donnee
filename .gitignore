@@ -8,7 +8,7 @@
 
 backbone.txt
 docker_run.txt
-.env
+.env.local
 
 *.pyc
 */__pycache__/*
