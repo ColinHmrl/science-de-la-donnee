@@ -75,8 +75,8 @@ def plot_value_array_binary(predictions_array, true_label, num_classes):
 def plot_results(binary, predictions, full_tests_labels, full_tests_images, class_names, save_path, index_start=5000, images_displayed=64, num_rows=45, num_cols=5):
 
   plt.figure(figsize=(2*2*num_cols, 2*num_rows))
+  i = 0
   if binary:
-    i = 0
     for image_index in range(index_start, index_start+images_displayed):
       plt.subplot(num_rows, 2*num_cols, 2*i+1)
       plot_image_binary(predictions[image_index], full_tests_labels[image_index], full_tests_images[image_index], class_names)
@@ -85,15 +85,15 @@ def plot_results(binary, predictions, full_tests_labels, full_tests_images, clas
       plot_value_array_binary(predictions[image_index], full_tests_labels[image_index], len(class_names))
       i+=1
   else:
-    for i in range(index_start, index_start+images_displayed):
+    for image_index in range(index_start, index_start+images_displayed):
         # index = tests_images = i%batch_size + i //batch_size
         plt.subplot(num_rows, 2*num_cols, 2*i-index_start+1)
-        plot_image(predictions[i], full_tests_labels[i], full_tests_images[i], class_names)
+        plot_image(predictions[image_index], full_tests_labels[image_index], full_tests_images[image_index], class_names)
 
         plt.subplot(num_rows, 2*num_cols, 2*i+index_start+2)
-        plot_value_array(predictions[i], full_tests_labels[i], len(class_names))
+        plot_value_array(predictions[image_index], full_tests_labels[image_index], len(class_names))
 
   plt.tight_layout()
-
-  plt.savefig(save_path + "/test_images.png")
+  if save_path != None:
+    plt.savefig(save_path + "/test_images.png")
   plt.show()

@@ -1,10 +1,7 @@
 import tensorflow as tf
-import augmentation
 
 def build(input_shape, num_classes):
-    input_layer = tf.keras.Input(shape= (input_shape[0], input_shape[1], 3))
-    augmented_input = augmentation.augment_data(input_layer)
-    backbone = tf.keras.applications.ResNet50(weights='imagenet', include_top=False, input_shape=(input_shape[0],input_shape[1], 3), input_tensor=augmented_input)
+    backbone = tf.keras.applications.ResNet50(weights='imagenet', include_top=False, input_shape=(input_shape[0],input_shape[1], 3))
 
     for layer in backbone.layers:
         layer.trainable = False
@@ -20,7 +17,7 @@ def build(input_shape, num_classes):
         output = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
         loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
 
-    model = tf.keras.models.Model(inputs=input_layer, outputs=output)
+    model = tf.keras.models.Model(inputs=backbone.input, outputs=output)
 
     model.compile(optimizer='adam',
               loss=loss,
