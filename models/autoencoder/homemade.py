@@ -1,0 +1,26 @@
+import tensorflow as tf
+from keras.layers import Input, Conv2D, MaxPooling2D, UpSampling2D, Dropout, add
+from keras.models import Model
+
+
+def build(img_size):
+    input_img = Input(shape=(img_size, img_size, 3))
+
+    # Encoder
+    x = Conv2D(128, (3, 3), activation='relu', padding='same')(input_img)
+    x = MaxPooling2D((2, 2), padding='same')(x)
+    x = Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+    encoded = MaxPooling2D((2, 2), padding='same')(x)
+
+    # Decoder
+    x = Conv2D(128, (3, 3), activation='relu', padding='same')(encoded)
+    x = UpSampling2D((2, 2))(x)
+    x = Conv2D(128, (3, 3), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    decoded = Conv2D(3, (3, 3), activation='sigmoid', padding='same')(x)
+
+
+    autoencoder = Model(input_img, decoded)
+    autoencoder.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
+
+    return autoencoder
