@@ -42,5 +42,9 @@ def build(img_size):
                     activity_regularizer=regularizers.l1(10e-10))(l15)
     model = Model(image, decoded)
 
-    model.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
+    model.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError(), metrics=['accuracy'])
     return model
+
+
+
+

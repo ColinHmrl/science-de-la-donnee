@@ -21,8 +21,9 @@ def build(input_shape):
 
     # use a resnet model as the decoder model
     decoder = ResNet50(input_tensor=encoder.ouput, include_top=False)
-    for layer in decoder.layers:
-        layer.trainable = False
+    decoder.layers = decoder.layers[::-1]
+    # for layer in decoder.layers:
+    #     layer.trainable = False
     decoded_output = Conv2DTranspose(3, (3, 3), activation='sigmoid', padding='same')(decoder)
 
     decoder_model = Model(inputs=decoder_input, outputs=decoded_output)
