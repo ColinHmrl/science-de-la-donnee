@@ -21,6 +21,6 @@ def build(img_size):
 
 
     autoencoder = Model(input_img, decoded)
-    autoencoder.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError())
+    autoencoder.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError(), metrics=['accuracy'])
 
     return autoencoder

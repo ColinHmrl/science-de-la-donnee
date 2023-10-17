@@ -5,7 +5,7 @@ from tensorflow.keras.applications import ResNet50
 
 def build(input_shape):
     # Define the input layer
-    input_layer = Input(shape=input_shape)
+    input_layer = Input(shape=(input_shape,input_shape,3))
 
     encoder = ResNet50(input_tensor=input_layer, include_top=False)
     for layer in encoder.layers:
@@ -17,7 +17,7 @@ def build(input_shape):
     encoder_model = Model(inputs=input_layer, outputs=encoder.output)
 
 
-    decoder_input = Input(shape=input_shape)
+    decoder_input = Input(shape=(input_shape,input_shape,3))
 
     decoder = Conv2DTranspose(512, (3, 3), activation='relu', padding='same')(decoder_input)
     decoder = Conv2DTranspose(256, (3, 3), activation='relu', padding='same')(decoder)
@@ -27,11 +27,11 @@ def build(input_shape):
 
     decoder_model = Model(inputs=decoder_input, outputs=decoded_output)
 
-    autoencoder_input = Input(shape=input_shape)
+    autoencoder_input = Input(shape=(input_shape,input_shape,3))
     encoded = encoder_model(autoencoder_input)
     decoded = decoder_model(encoded)
 
     autoencoder = Model(inputs=autoencoder_input, outputs=decoded)
     
-    autoencoder.compile(optimizer='adam', loss='mse')
+    autoencoder.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
     return autoencoder
