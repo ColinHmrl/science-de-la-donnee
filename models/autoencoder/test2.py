@@ -41,10 +41,6 @@ def build(img_size):
     decoded = Conv2D(3, (3,3), padding='same', activation='relu',
                     activity_regularizer=regularizers.l1(10e-10))(l15)
     model = Model(image, decoded)
-
+    
     model.compile(optimizer='adam', loss=tf.keras.losses.MeanSquaredError(), metrics=['accuracy'])
     return model
-
-
-
-

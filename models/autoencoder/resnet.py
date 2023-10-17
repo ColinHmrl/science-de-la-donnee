@@ -23,7 +23,7 @@ def build(IMG_SIZE):
     decoded_output = Conv2DTranspose(3, (3, 3), activation='sigmoid', padding='same')(decoder)
     decoder_model = Model(inputs=decoder_input_layer, outputs=decoded_output)
 
-    autoencoder_input = Input(shape=input_shape)
+    autoencoder_input = Input(shape=(input_shape,input_shape,3))
     encoded = encoder_model(autoencoder_input)
     decoded = decoder_model(encoded)
     
