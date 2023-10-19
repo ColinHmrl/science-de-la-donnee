@@ -11,3 +11,12 @@ def display_images(X, n):
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
     plt.show()
+
+def display_images_single_row(*images):
+    """Display images on a single row."""
+    plt.figure(figsize=(50, 50))
+    for index, image in enumerate(images):
+        plt.subplot(1, len(images), index+1)
+        plt.imshow(image)
+        plt.axis('off')
+    plt.show()

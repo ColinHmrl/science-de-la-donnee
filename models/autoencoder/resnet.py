@@ -1,5 +1,5 @@
 import tensorflow as tf
-from tensorflow.keras.layers import Input, Conv2DTranspose, Reshape, UpSampling2D
+from tensorflow.keras.layers import Input, Conv2DTranspose, Reshape, UpSampling2D, GlobalAveragePooling2D, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras.applications import ResNet50
 
@@ -15,19 +15,31 @@ def build(IMG_SIZE):
     encoder_model = Model(inputs=encoder_input_layer, outputs=encoder.output)
 
 
-    decoder_input_layer = Input(shape=(encoder.output.shape[1], encoder.output.shape[2], encoder.output.shape[3]))    
-    decoder = Conv2DTranspose(256, (3, 3), activation='relu', padding='same')(decoder)
-    decoder = Conv2DTranspose(128, (3, 3), activation='relu', padding='same')(decoder)
-    decoder = Conv2DTranspose(64, (3, 3), activation='relu', padding='same')(decoder)
-    decoder = Conv2DTranspose(32, (3, 3), activation='relu', padding='same')(decoder)
-    decoded_output = Conv2DTranspose(3, (3, 3), activation='sigmoid', padding='same')(decoder)
-    decoder_model = Model(inputs=decoder_input_layer, outputs=decoded_output)
+    x = GlobalAveragePooling2D()(encoder_model.output)
+    x = Dense(1024, activation='relu')(x)
+    x = Dense(8 * 8 * 2048, activation='relu')(x)  # Adjust based on your specific ResNet50 variant
+    
+    x = Reshape((8, 8, 2048))(x)  # Adjust based on your specific ResNet50 variant
+    x = Conv2DTranspose(1024, (3, 3), activation='relu', padding='same')(x)
+    x = Conv2DTranspose(512, (3, 3), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    x = Conv2DTranspose(256, (3, 3), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    x = Conv2DTranspose(128, (3, 3), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    x = Conv2DTranspose(64, (3, 3), activation='relu', padding='same')(x)
+    x = UpSampling2D((2, 2))(x)
+    decoded = Conv2DTranspose(3, (3, 3), activation='sigmoid', padding='same')(x)  # Output with the same shape as input
 
-    autoencoder_input = Input(shape=(input_shape,input_shape,3))
+    decoder = Model(encoder_model.output, decoded, name='decoder')
+    decoder_model = Model(inputs=encoder_model.output, outputs=decoded)
+
+    autoencoder_input = Input(shape=input_shape)
     encoded = encoder_model(autoencoder_input)
     decoded = decoder_model(encoded)
     
     autoencoder = Model(inputs=autoencoder_input, outputs=decoded)
     autoencoder.compile(optimizer='adam', loss='mse', metrics=['accuracy'])
 
+    autoencoder.summary()
     return autoencoder

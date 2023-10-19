@@ -14,20 +14,11 @@ def build(img_size):
     x = Dropout(0.3)(x)
     x = MaxPooling2D((2, 2), padding='same')(x)
 
-    x = Conv2D(256, (3, 3), activation='relu', padding='same')(x)
-    x = Dropout(0.3)(x)
-    x = MaxPooling2D((2, 2), padding='same')(x)
+    encoded = Conv2D(256, (3, 3), activation='relu', padding='same')(x)
     
-    x = Conv2D(512, (3, 3), activation='relu', padding='same')(x)
-    encoded = Dropout(0.2)(x)
-
-    # Decoder
-    x = Conv2D(512, (3, 3), activation='relu', padding='same')(x)
-    
-    x = UpSampling2D((2, 2))(encoded)    
-    x = Conv2DTranspose(256, (3, 3), activation='relu', padding='same')(x)
-
-    x = UpSampling2D((2, 2))(x)    
+    # Decoder    
+    x = Conv2DTranspose(256, (3, 3), activation='relu', padding='same')(encoded)
+    x = UpSampling2D((2, 2))(x)
     x = Conv2DTranspose(128, (3, 3), activation='relu', padding='same')(x)
 
     x = Conv2DTranspose(64, (3, 3), activation='relu', padding='same')(x)
