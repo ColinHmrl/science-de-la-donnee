@@ -14,3 +14,10 @@ docker_run.txt
 */__pycache__/*
 *.cpython-*.pyc
 */__pycache__/*
+
+Pipeline_Final/data/dataset/*
+Pipeline_Final/results/captionning/*
+Pipeline_Final/results/autoencoder/*
+Pipeline_Final/results/classification/*
+
+Pipeline_Final/weights/classification/cp*
