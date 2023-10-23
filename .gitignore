@@ -21,3 +21,5 @@ Pipeline_Final/results/autoencoder/*
 Pipeline_Final/results/classification/*
 
 Pipeline_Final/weights/classification/cp*
+Pipeline_Final/models/resnet50.keras
+Pipeline_Final/models/resnet50.h5
